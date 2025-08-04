@@ -171,6 +171,11 @@ body::before {
     position: relative;
     z-index: 2;
     animation: photoScan 3s ease-in-out infinite;
+    background: rgba(0, 50, 0, 0.3);
+    loading: lazy;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 1/1;
 }
 
 @keyframes photoScan {
