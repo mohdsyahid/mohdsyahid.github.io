@@ -609,11 +609,14 @@ body::before {
     background: #383838;
 }
 
-/* Projects */
+/* Projects grid layout */
 .projects {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 15px;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 10px;
 }
 
 /* Project boxes with syntax styling */
@@ -656,10 +659,15 @@ body::before {
     font-size: 0.6rem;
 }
 
+/* Project status icons styling */
 .project-status {
     color: #4ec9b0;
     font-weight: bold;
     position: relative;
+    font-size: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 .project-status::before {
@@ -812,12 +820,17 @@ body::before {
     }
 }
 
+/* Responsive projects layout */
 @media (max-width: 768px) {
-    body {
-        overflow-y: auto;
-        height: auto;
-        min-height: 100vh;
+    .projects {
+        grid-template-columns: 1fr;
+        max-height: 50vh;
     }
+    
+    .project-status {
+        font-size: 0.55rem;
+    }
+}
     
     .container {
         grid-template-columns: 1fr;
@@ -934,7 +947,13 @@ body::before {
     }
     
     .projects {
+        grid-template-columns: 1fr;
+        max-height: 50vh;
         gap: 10px;
+    }
+    
+    .project-status {
+        font-size: 0.55rem;
     }
     
     .pixel-box {
