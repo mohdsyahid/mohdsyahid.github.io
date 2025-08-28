@@ -6,8 +6,8 @@
 
 body {
     font-family: 'Share Tech Mono', monospace;
-    background: #000;
-    color: #00ff00;
+    background: #1e1e1e;
+    color: #d4d4d4;
     height: 100vh;
     overflow: hidden;
     display: flex;
@@ -16,7 +16,7 @@ body {
     position: relative;
 }
 
-/* Terminal overlay effect */
+/* Code editor overlay effect */
 body::before {
     content: '';
     position: fixed;
@@ -25,21 +25,20 @@ body::before {
     width: 100%;
     height: 100%;
     background: 
-        repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 2px,
-            rgba(0, 255, 0, 0.03) 2px,
-            rgba(0, 255, 0, 0.03) 4px
+        linear-gradient(
+            90deg,
+            rgba(0, 122, 204, 0.02) 0%,
+            transparent 1px
         ),
-        radial-gradient(
-            ellipse at center,
-            rgba(0, 255, 0, 0.1) 0%,
-            rgba(0, 0, 0, 0.9) 100%
+        linear-gradient(
+            180deg,
+            rgba(0, 122, 204, 0.02) 0%,
+            transparent 1px
         );
+    background-size: 20px 20px;
     pointer-events: none;
     z-index: 1;
-    animation: flicker 0.15s infinite linear;
+    opacity: 0.3;
 }
 
 @keyframes flicker {
@@ -47,60 +46,74 @@ body::before {
     50% { opacity: 0.98; }
 }
 
-/* Terminal window */
+/* Code editor window */
 .terminal-overlay {
     width: 95%;
     max-width: 1200px;
     height: 90vh;
-    background: rgba(0, 0, 0, 0.95);
-    border: 2px solid #00ff00;
+    background: #252526;
+    border: 1px solid #3c3c3c;
     border-radius: 8px;
     box-shadow: 
-        0 0 20px rgba(0, 255, 0, 0.5),
-        inset 0 0 20px rgba(0, 255, 0, 0.1);
+        0 4px 20px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
     position: relative;
     z-index: 2;
-    animation: terminalBoot 2s ease-out;
+    animation: editorBoot 2s ease-out;
+    overflow: hidden;
 }
 
-@keyframes terminalBoot {
+@keyframes editorBoot {
     0% {
         opacity: 0;
-        transform: scale(0.8);
+        transform: translateY(20px);
     }
     50% {
         opacity: 0.5;
-        transform: scale(0.9);
+        transform: translateY(10px);
     }
     100% {
         opacity: 1;
-        transform: scale(1);
+        transform: translateY(0);
     }
 }
 
-/* Terminal header */
+/* Code editor header */
 .terminal-header {
-    background: linear-gradient(135deg, #001100, #003300);
+    background: linear-gradient(135deg, #2d2d30, #383838);
     padding: 10px 15px;
-    border-bottom: 1px solid #00ff00;
+    border-bottom: 1px solid #3c3c3c;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-radius: 6px 6px 0 0;
+    border-radius: 7px 7px 0 0;
+    position: relative;
+}
+
+.terminal-header::before {
+    content: '/* portfolio.js */';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    color: #6a9955;
+    font-style: italic;
 }
 
 .terminal-title {
-    font-family: 'Orbitron', monospace;
+    font-family: 'Share Tech Mono', monospace;
     font-size: 0.9rem;
-    color: #00ff00;
-    text-shadow: 0 0 10px #00ff00;
-    animation: titleGlow 2s ease-in-out infinite alternate;
+    color: #007acc;
+    position: relative;
 }
 
-@keyframes titleGlow {
-    from { text-shadow: 0 0 10px #00ff00; }
-    to { text-shadow: 0 0 20px #00ff00, 0 0 30px #00ff00; }
+.terminal-title::before {
+    content: '1  ';
+    color: #858585;
+    margin-right: 8px;
 }
+
+/* Removed titleGlow animation for cleaner code editor look */
 
 .terminal-controls {
     display: flex;
@@ -115,9 +128,9 @@ body::before {
     transition: all 0.3s;
 }
 
-.minimize { background: #ffff00; }
-.maximize { background: #00ff00; }
-.close { background: #ff0000; }
+.minimize { background: #ffbd2e; }
+.maximize { background: #28ca42; }
+.close { background: #ff5f56; }
 
 .control:hover {
     transform: scale(1.2);
@@ -136,12 +149,23 @@ body::before {
 
 /* Profile section */
 .profile {
-    border-right: 2px solid #00ff00;
+    border-right: 1px solid #3c3c3c;
     padding-right: 25px;
     display: flex;
     flex-direction: column;
     gap: 15px;
     animation: slideInLeft 1.5s ease-out;
+    position: relative;
+}
+
+.profile::before {
+    content: '// User Profile Object';
+    position: absolute;
+    top: -25px;
+    left: 0;
+    font-size: 0.7rem;
+    color: #6a9955;
+    font-style: italic;
 }
 
 @keyframes slideInLeft {
@@ -164,38 +188,24 @@ body::before {
 .photo {
     width: 120px;
     height: 120px;
-    border: 3px solid #00ff00;
+    border: 2px solid #007acc;
+    border-radius: 8px;
     object-fit: cover;
-    filter: grayscale(100%) contrast(1.3) brightness(1.1);
-    image-rendering: pixelated;
+    filter: none;
     position: relative;
     z-index: 2;
-    animation: photoScan 3s ease-in-out infinite;
-    background: rgba(0, 50, 0, 0.3);
+    background: #2d2d30;
     loading: lazy;
     max-width: 100%;
     height: auto;
     aspect-ratio: 1/1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-@keyframes photoScan {
-    0%, 100% {
-        box-shadow: 0 0 15px #00ff00;
-    }
-    50% {
-        box-shadow: 0 0 25px #00ff00, 0 0 35px #00ff00;
-    }
-}
+/* Removed photoScan animation for cleaner look */
 
 .scan-line {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #00ff00, transparent);
-    animation: scanMove 2s linear infinite;
-    z-index: 3;
+    display: none;
 }
 
 @keyframes scanMove {
@@ -204,12 +214,23 @@ body::before {
 }
 
 .profile h1 {
-    font-family: 'Orbitron', monospace;
+    font-family: 'Share Tech Mono', monospace;
     font-size: 1.1rem;
     font-weight: 700;
     text-align: center;
     margin-bottom: 10px;
-    color: #00ff00;
+    color: #569cd6;
+    position: relative;
+}
+
+.profile h1::before {
+    content: 'const ';
+    color: #569cd6;
+}
+
+.profile h1::after {
+    content: ' = {';
+    color: #d4d4d4;
 }
 
 /* Enhanced glitch effect */
@@ -276,15 +297,26 @@ body::before {
     80% { transform: translate(1px, 1px); }
 }
 
-/* Typewriter effect */
+/* Syntax highlighting for role */
 .typewriter {
     overflow: hidden;
-    border-right: 2px solid #00ff00;
+    border-right: 2px solid #569cd6;
     white-space: nowrap;
     animation: typing 4s steps(25, end), blink-caret 0.75s step-end infinite;
     font-size: 0.8rem;
-    color: #00ff00;
+    color: #ce9178;
     text-align: center;
+    position: relative;
+}
+
+.typewriter::before {
+    content: '  role: "';
+    color: #9cdcfe;
+}
+
+.typewriter::after {
+    content: '",';
+    color: #d4d4d4;
 }
 
 @keyframes typing {
@@ -294,14 +326,25 @@ body::before {
 
 @keyframes blink-caret {
     from, to { border-color: transparent; }
-    50% { border-color: #00ff00; }
+    50% { border-color: #569cd6; }
 }
 
 .blink {
     animation: blink 1.5s linear infinite;
     font-size: 0.7rem;
-    color: #ffff00;
+    color: #dcdcaa;
     text-align: center;
+    position: relative;
+}
+
+.blink::before {
+    content: '  experience: "';
+    color: #9cdcfe;
+}
+
+.blink::after {
+    content: '",';
+    color: #d4d4d4;
 }
 
 @keyframes blink {
@@ -312,11 +355,23 @@ body::before {
 .status {
     font-size: 0.7rem;
     text-align: center;
-    color: #888;
+    color: #6a9955;
+    position: relative;
+}
+
+.status::before {
+    content: '  status: "';
+    color: #9cdcfe;
+}
+
+.status::after {
+    content: '"}\A// End of object';
+    color: #d4d4d4;
+    white-space: pre;
 }
 
 .online {
-    color: #00ff00;
+    color: #4ec9b0;
     animation: pulse 2s ease-in-out infinite;
 }
 
@@ -325,20 +380,41 @@ body::before {
     50% { opacity: 0.5; }
 }
 
-/* Social media section */
+/* Social media section with syntax styling */
 .social-section {
     margin-top: 20px;
     padding-top: 15px;
-    border-top: 1px solid #333;
+    border-top: 1px solid #3c3c3c;
+    position: relative;
+}
+
+.social-section::before {
+    content: '// Social Links Array';
+    position: absolute;
+    top: -5px;
+    left: 0;
+    font-size: 0.7rem;
+    color: #6a9955;
+    font-style: italic;
 }
 
 .social-title {
-    font-family: 'Orbitron', monospace;
+    font-family: 'Share Tech Mono', monospace;
     font-size: 0.8rem;
-    color: #00ff00;
+    color: #569cd6;
     text-align: center;
     margin-bottom: 15px;
-    text-shadow: 0 0 10px #00ff00;
+    position: relative;
+}
+
+.social-title::before {
+    content: 'const ';
+    color: #569cd6;
+}
+
+.social-title::after {
+    content: ' = [';
+    color: #d4d4d4;
 }
 
 .social-grid {
@@ -352,14 +428,26 @@ body::before {
     align-items: center;
     gap: 8px;
     padding: 8px;
-    background: rgba(0, 255, 0, 0.1);
-    border: 1px solid #00ff00;
+    background: rgba(30, 30, 30, 0.8);
+    border: 1px solid #3c3c3c;
+    border-left: 3px solid #007acc;
     text-decoration: none;
-    color: #00ff00;
+    color: #9cdcfe;
     font-size: 0.6rem;
     transition: all 0.3s;
     position: relative;
     overflow: hidden;
+    border-radius: 3px;
+}
+
+.social-link::before {
+    content: '{ ';
+    color: #d4d4d4;
+}
+
+.social-link::after {
+    content: ' }';
+    color: #d4d4d4;
 }
 
 .social-link::before {
@@ -373,14 +461,11 @@ body::before {
     transition: left 0.5s;
 }
 
-.social-link:hover::before {
-    left: 100%;
-}
-
 .social-link:hover {
-    background: rgba(0, 255, 0, 0.2);
+    background: rgba(0, 122, 204, 0.1);
+    border-left-color: #569cd6;
     transform: translateX(3px);
-    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+    box-shadow: 0 2px 8px rgba(0, 122, 204, 0.2);
 }
 
 .social-icon {
@@ -413,83 +498,115 @@ body::before {
 }
 
 .pixel-title {
-    font-family: 'Orbitron', monospace;
+    font-family: 'Share Tech Mono', monospace;
     font-size: 1rem;
     font-weight: 700;
     margin-bottom: 15px;
-    color: #00ff00;
-    text-shadow: 0 0 10px #00ff00;
+    color: #569cd6;
     position: relative;
     padding-left: 20px;
 }
 
 .pixel-title::before {
-    content: '> ';
+    content: '// ';
     position: absolute;
     left: 0;
-    color: #ffff00;
-    animation: blink 1s linear infinite;
+    color: #6a9955;
 }
 
-/* Code block styling */
+/* Code block styling with syntax highlighting */
 .code-block {
-    background: rgba(0, 50, 0, 0.3);
-    border: 1px solid #00ff00;
+    background: #1e1e1e;
+    border: 1px solid #3c3c3c;
+    border-left: 3px solid #007acc;
     padding: 15px;
     border-radius: 4px;
     position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.code-block::before {
+    content: '1';
+    position: absolute;
+    left: -25px;
+    top: 15px;
+    color: #858585;
+    font-size: 0.8rem;
+    width: 20px;
+    text-align: right;
 }
 
 .code-line {
     font-family: 'Share Tech Mono', monospace;
-    color: #00ff00;
+    color: #d4d4d4;
     margin-bottom: 10px;
+    position: relative;
+    padding-left: 30px;
 }
 
-/* Technology tags */
+.code-line::before {
+    content: 'const techStack';
+    color: #569cd6;
+    position: absolute;
+    left: 0;
+}
+
+/* Technology tags with syntax highlighting */
 .tags {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
     margin-left: 20px;
+    position: relative;
+}
+
+.tags::before {
+    content: '= [';
+    position: absolute;
+    left: -20px;
+    color: #d4d4d4;
+}
+
+.tags::after {
+    content: '];';
+    position: absolute;
+    right: -15px;
+    color: #d4d4d4;
 }
 
 .pixel-tag {
-    background: rgba(0, 0, 0, 0.8);
-    color: #00ff00;
+    background: #2d2d30;
+    color: #ce9178;
     padding: 4px 8px;
     font-size: 0.6rem;
-    border: 1px solid #00ff00;
+    border: 1px solid #3c3c3c;
+    border-radius: 3px;
     transition: all 0.3s;
     cursor: pointer;
     position: relative;
     overflow: hidden;
 }
 
-.pixel-tag.backend { border-color: #ff6b6b; color: #ff6b6b; }
-.pixel-tag.frontend { border-color: #4ecdc4; color: #4ecdc4; }
-.pixel-tag.database { border-color: #45b7d1; color: #45b7d1; }
-.pixel-tag.devops { border-color: #f9ca24; color: #f9ca24; }
-.pixel-tag.ai { border-color: #6c5ce7; color: #6c5ce7; }
-
 .pixel-tag::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
+    content: '"';
+    color: #ce9178;
 }
 
-.pixel-tag:hover::before {
-    left: 100%;
+.pixel-tag::after {
+    content: '"';
+    color: #ce9178;
 }
+
+.pixel-tag.backend { border-color: #f92672; color: #f92672; }
+.pixel-tag.frontend { border-color: #66d9ef; color: #66d9ef; }
+.pixel-tag.database { border-color: #a6e22e; color: #a6e22e; }
+.pixel-tag.devops { border-color: #fd971f; color: #fd971f; }
+.pixel-tag.ai { border-color: #ae81ff; color: #ae81ff; }
 
 .pixel-tag:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 15px currentColor;
+    box-shadow: 0 2px 8px rgba(0, 122, 204, 0.3);
+    background: #383838;
 }
 
 /* Projects */
@@ -499,42 +616,36 @@ body::before {
     gap: 15px;
 }
 
+/* Project boxes with syntax styling */
 .pixel-box {
-    border: 2px solid #00ff00;
+    border: 1px solid #3c3c3c;
+    border-left: 4px solid #007acc;
     padding: 15px;
-    background: rgba(0, 50, 0, 0.2);
+    background: #252526;
     transition: all 0.3s;
     cursor: pointer;
     position: relative;
     overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .pixel-box::before {
-    content: '';
+    content: '// Project Object';
     position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: linear-gradient(45deg, #00ff00, #ffff00, #ff0000, #0000ff);
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.3s;
-    animation: borderRotate 3s linear infinite;
-}
-
-@keyframes borderRotate {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.pixel-box:hover::before {
-    opacity: 1;
+    top: -5px;
+    left: 15px;
+    font-size: 0.6rem;
+    color: #6a9955;
+    background: #252526;
+    padding: 0 5px;
 }
 
 .pixel-box:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(0, 255, 0, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 122, 204, 0.2);
+    border-left-color: #569cd6;
+    background: #2d2d30;
 }
 
 .project-header {
@@ -546,26 +657,65 @@ body::before {
 }
 
 .project-status {
-    color: #00ff00;
+    color: #4ec9b0;
     font-weight: bold;
+    position: relative;
+}
+
+.project-status::before {
+    content: 'status: "';
+    color: #9cdcfe;
+}
+
+.project-status::after {
+    content: '",';
+    color: #d4d4d4;
 }
 
 .project-date {
-    color: #888;
+    color: #6a9955;
+    position: relative;
+}
+
+.project-date::before {
+    content: 'year: ';
+    color: #9cdcfe;
 }
 
 .pixel-box h3 {
-    font-family: 'Orbitron', monospace;
+    font-family: 'Share Tech Mono', monospace;
     font-size: 0.8rem;
     font-weight: 700;
     margin-bottom: 8px;
-    color: #00ff00;
+    color: #dcdcaa;
+    position: relative;
+}
+
+.pixel-box h3::before {
+    content: 'name: "';
+    color: #9cdcfe;
+}
+
+.pixel-box h3::after {
+    content: '",';
+    color: #d4d4d4;
 }
 
 .project-desc {
     font-size: 0.7rem;
-    color: #ccc;
+    color: #ce9178;
     margin-bottom: 10px;
+    position: relative;
+}
+
+.project-desc::before {
+    content: 'tech: "';
+    color: #9cdcfe;
+}
+
+.project-desc::after {
+    content: '",';
+    color: #d4d4d4;
 }
 
 .project-stats {
@@ -575,17 +725,32 @@ body::before {
 }
 
 .stat {
-    color: #ffff00;
+    color: #b5cea8;
     padding: 2px 6px;
-    background: rgba(255, 255, 0, 0.1);
-    border: 1px solid #ffff00;
+    background: rgba(45, 45, 48, 0.8);
+    border: 1px solid #3c3c3c;
+    border-radius: 3px;
+    position: relative;
+    font-family: 'Share Tech Mono', monospace;
 }
 
-/* Terminal footer */
+/* Terminal footer with code syntax */
 .terminal-footer {
     margin-top: auto;
     padding-top: 15px;
-    border-top: 1px solid #333;
+    border-top: 1px solid #3c3c3c;
+    position: relative;
+}
+
+.terminal-footer::before {
+    content: '// End of file';
+    position: absolute;
+    top: -5px;
+    left: 0;
+    font-size: 0.6rem;
+    color: #6a9955;
+    background: #252526;
+    padding: 0 5px;
 }
 
 .command-line {
@@ -596,31 +761,37 @@ body::before {
     font-size: 0.8rem;
 }
 
+.command-line::before {
+    content: '$ ';
+    color: #569cd6;
+    margin-right: 5px;
+}
+
 .prompt {
-    color: #00ff00;
+    color: #9cdcfe;
 }
 
 .cursor {
     animation: blink 1s linear infinite;
-    color: #00ff00;
+    color: #d4d4d4;
 }
 
-/* Scrollbar styling */
+/* Scrollbar styling for code editor theme */
 .content::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
 }
 
 .content::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.3);
+    background: #1e1e1e;
 }
 
 .content::-webkit-scrollbar-thumb {
-    background: #00ff00;
-    border-radius: 3px;
+    background: #3c3c3c;
+    border-radius: 4px;
 }
 
 .content::-webkit-scrollbar-thumb:hover {
-    background: #00cc00;
+    background: #007acc;
 }
 
 /* Responsive design */
@@ -657,7 +828,7 @@ body::before {
     
     .profile {
         border-right: none;
-        border-bottom: 2px solid #00ff00;
+        border-bottom: 1px solid #3c3c3c;
         padding-right: 0;
         padding-bottom: 15px;
         margin-bottom: 15px;
